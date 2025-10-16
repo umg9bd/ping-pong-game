@@ -3,30 +3,38 @@ from game.game_engine import GameEngine
 
 # Initialize pygame/Start application
 pygame.init()
+pygame.mixer.init() # <-- INITIALIZE THE MIXER
 
 # Screen dimensions
 WIDTH, HEIGHT = 800, 600
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Ping Pong - Pygame Version")
 
-# Colors
-WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-
-# Clock
-clock = pygame.time.Clock()
 FPS = 60
 
-# Game loop
+clock = pygame.time.Clock()
 engine = GameEngine(WIDTH, HEIGHT)
 
 def main():
     running = True
     while running:
-        SCREEN.fill(BLACK)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            
+            if event.type == pygame.KEYDOWN:
+                if engine.game_state == "game_over":
+                    if event.key == pygame.K_3:
+                        engine.reset_game(3)
+                    elif event.key == pygame.K_5:
+                        engine.reset_game(5)
+                    elif event.key == pygame.K_7:
+                        engine.reset_game(7)
+                    elif event.key == pygame.K_ESCAPE:
+                        running = False
+
+        SCREEN.fill(BLACK)
 
         engine.handle_input()
         engine.update()

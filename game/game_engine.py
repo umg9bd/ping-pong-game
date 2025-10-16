@@ -86,15 +86,26 @@ class GameEngine:
             screen.blit(ai_text, (self.width * 3//4 - ai_text.get_width()//2, 20))
     
     def render_game_over(self, screen):
+        """Displays the winner, final score, and replay options."""
         title_font = pygame.font.SysFont(None, 70)
         option_font = pygame.font.SysFont(None, 40)
+        
+        # --- Winner Text ---
         winner_surface = title_font.render(self.winner_text, True, WHITE)
-        screen.blit(winner_surface, (self.width//2 - winner_surface.get_width()//2, self.height//4))
+        screen.blit(winner_surface, (self.width/2 - winner_surface.get_width()/2, self.height/4))
+        
+        # --- NEW: Final Score Text ---
+        score_text = f"Final Score: {self.player_score} - {self.ai_score}"
+        score_surface = option_font.render(score_text, True, WHITE)
+        screen.blit(score_surface, (self.width/2 - score_surface.get_width()/2, self.height/4 + 60))
+
+        # --- Replay Options ---
         options = ["Best of 3 (Press 3)", "Best of 5 (Press 5)", "Best of 7 (Press 7)", "Exit (Press ESC)"]
         for i, option in enumerate(options):
             option_surface = option_font.render(option, True, WHITE)
-            y_pos = self.height//2 + i * 40
-            screen.blit(option_surface, (self.width//2 - option_surface.get_width()//2, y_pos))
+            # Adjusted y_pos to make space for the score
+            y_pos = self.height/2 + 50 + i * 40
+            screen.blit(option_surface, (self.width/2 - option_surface.get_width()/2, y_pos))
 
     def reset_game(self, new_score_target):
         self.winning_score = new_score_target
